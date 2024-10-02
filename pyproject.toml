@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "different-selectors"
+version = "0.1.0"
+description = ""
+authors = ["Viktoriia Lavrova <viktoriia.lav2908@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+selene = "2.0.0rc9"
+pytest = "^8.3.3"
+pydantic-settings = "^2.5.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
