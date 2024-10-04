@@ -13,7 +13,7 @@ class TestLiteCartUsingSeleniumWebdriver:
         о товарах (каждому товару соответствует свой блок)
         '''
         driver = browser_management_selenium
-        driver.get(config.settings.base_url)
+        driver.get(config.settings.base_url + '/')
 
         all_elements = driver.find_elements(By.CSS_SELECTOR, '.product')
 
@@ -27,7 +27,7 @@ class TestLiteCartUsingSeleniumWebdriver:
         '''
         driver = browser_management_selenium
         wait = WebDriverWait(driver, timeout=2, ignored_exceptions=(WebDriverException,))
-        driver.get(config.settings.base_url)
+        driver.get(config.settings.base_url + '/')
 
         all_links = wait.until(lambda driver: driver.find_elements(By.CSS_SELECTOR, '.product a.link'))
 
@@ -42,7 +42,7 @@ class TestLiteCartUsingSeleniumWebdriver:
         '''
         driver = browser_management_selenium
         wait = WebDriverWait(driver, timeout=2, ignored_exceptions=(WebDriverException,))
-        driver.get(config.settings.base_url)
+        driver.get(config.settings.base_url + '/')
 
         link = wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, '#footer a[href*=privacy-policy]')).get_attribute('href')
         driver.get(link)
@@ -57,7 +57,7 @@ class TestLiteCartUsingSeleniumWebdriver:
         '''
         driver = browser_management_selenium
         wait = WebDriverWait(driver, timeout=2, ignored_exceptions=(WebDriverException,))
-        driver.get(config.settings.base_url)
+        driver.get(config.settings.base_url + '/')
 
         all_elements = wait.until(lambda driver: driver.find_elements(By.CSS_SELECTOR, '#site-menu>*>li'))
 
@@ -122,28 +122,31 @@ class TestLiteCartUsingSeleniumWebdriver:
 
         assert len(all_elements) == 4
 
-    # def test_10(self, browser_management_selenium):
-    #     '''
-    #     10. Добавьте в магазине http://litecart.stqa.ru/index.php/en/ в корзину 2-3 товара, перейдите на страницу
-    #     оформления заказа http://litecart.stqa.ru/index.php/en/checkout и подберите локатор для поиска элемента,
-    #     содержащего общую сумму к оплате
-    #     '''
-    #     driver = browser_management_selenium
-    #     wait = WebDriverWait(driver, timeout=2, ignored_exceptions=(WebDriverException,))
-    #     driver.get(config.settings.base_url)
-    #
-    #     # Добавляем первую утку
-    #     browser.all('.product .link').element_by(have.attribute('title').value('Purple Duck')).click()
-    #     browser.element('[name=add_cart_product]').click()
-    #     browser.element('#cart .quantity').with_(timeout=6).should(have.text('1'))
-    #     browser.element('#page #breadcrumbs').element('//a[contains(text(),"Home")]').click()
-    #
-    #     # Добавляем вторую утку
-    #     browser.all('.product .link').element_by(have.attribute('title').value('Green Duck')).click()
-    #     browser.element('[name=add_cart_product]').click()
-    #     browser.element('#cart .quantity').with_(timeout=6).should(have.text('2'))
-    #
-    #     # Открываем корзину
-    #     browser.element('#cart').click()
-    #     browser.element('.dataTable .footer').all('td')[1].should(have.exact_text('$20.00'))
+    def test_10(self, browser_management_selenium):
+        '''
+        10. Добавьте в магазине http://litecart.stqa.ru/index.php/en/ в корзину 2-3 товара, перейдите на страницу
+        оформления заказа http://litecart.stqa.ru/index.php/en/checkout и подберите локатор для поиска элемента,
+        содержащего общую сумму к оплате
+        '''
+        driver = browser_management_selenium
+        wait = WebDriverWait(driver, timeout=2, ignored_exceptions=(WebDriverException,))
+        driver.get(config.settings.base_url + '/')
+
+        # Добавляем первую утку
+        wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, '#box-most-popular .link[title="Purple Duck"]')).click()
+        wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, '[name=add_cart_product]')).click()
+        wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, '#cart .quantity').text == '1')
+        wait.until(lambda driver: driver.find_element(By.XPATH, '//*[@id="page"]//*[@id="breadcrumbs"]/ul/li/a[contains(text(),"Home")]')).click()
+
+        # Добавляем вторую утку
+        wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, '#box-most-popular .link[title="Green Duck"]')).click()
+        wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, '[name=add_cart_product]')).click()
+        wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, '#cart .quantity').text == '2')
+
+        # Открываем корзину
+        wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, '#cart')).click()
+
+        text = wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, '.dataTable .footer td:nth-child(2)')).text
+        assert text == '$20.00'
+
 

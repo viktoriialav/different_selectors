@@ -99,13 +99,13 @@ class TestLiteCartUsingCSS:
         browser.open('/')
 
         # Добавляем первую утку
-        browser.all('.product .link').element_by(have.attribute('title').value('Purple Duck')).click()
+        browser.all('#box-most-popular .link').element_by(have.attribute('title').value('Purple Duck')).click()
         browser.element('[name=add_cart_product]').click()
         browser.element('#cart .quantity').with_(timeout=6).should(have.text('1'))
         browser.element('#page #breadcrumbs').element('//a[contains(text(),"Home")]').click()
 
         # Добавляем вторую утку
-        browser.all('.product .link').element_by(have.attribute('title').value('Green Duck')).click()
+        browser.all('#box-most-popular .link').element_by(have.attribute('title').value('Green Duck')).click()
         browser.element('[name=add_cart_product]').click()
         browser.element('#cart .quantity').with_(timeout=6).should(have.text('2'))
 
