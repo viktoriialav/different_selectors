@@ -44,7 +44,9 @@ class TestLiteCartUsingSeleniumWebdriver:
         wait = WebDriverWait(driver, timeout=2, ignored_exceptions=(WebDriverException,))
         driver.get(config.settings.base_url + '/')
 
-        link = wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, '#footer a[href*=privacy-policy]')).get_attribute('href')
+        link = wait.until(
+            lambda driver: driver.find_element(By.CSS_SELECTOR, '#footer a[href*=privacy-policy]')
+        ).get_attribute('href')
         driver.get(link)
         text = wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, 'h1')).text
 
@@ -105,7 +107,12 @@ class TestLiteCartUsingSeleniumWebdriver:
         wait = WebDriverWait(driver, timeout=2, ignored_exceptions=(WebDriverException,))
         driver.get(config.settings.base_url + '/acme-corp-m-1/')
 
-        wait.until(lambda driver: driver.find_element(By.XPATH, '//*[contains(@class, "sticker") and contains(@class, "sale")]/../../../*[contains(@class, "zoomable")]')).click()
+        wait.until(
+            lambda driver: driver.find_element(
+                By.XPATH,
+                '//*[contains(@class, "sticker") and contains(@class, "sale")]/../../../*[contains(@class, "zoomable")]'
+            )
+        ).click()
 
         wait.until(element_to_be_clickable((By.CSS_SELECTOR, '#fancybox-close')))
 
@@ -118,7 +125,12 @@ class TestLiteCartUsingSeleniumWebdriver:
         wait = WebDriverWait(driver, timeout=2, ignored_exceptions=(WebDriverException,))
         driver.get(config.settings.base_url + '/acme-corp-m-1/')
 
-        all_elements = wait.until(lambda driver: driver.find_elements(By.XPATH, '//li[contains(@class, "product")][not(.//*[contains(@class, "sale")])]//a[contains(@class, "link")]'))
+        all_elements = wait.until(
+            lambda driver: driver.find_elements(
+                By.XPATH,
+                '//li[contains(@class, "product")][not(.//*[contains(@class, "sale")])]//a[contains(@class, "link")]'
+            )
+        )
 
         assert len(all_elements) == 4
 

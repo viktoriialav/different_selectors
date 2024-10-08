@@ -100,17 +100,16 @@ class TestLiteCartUsingXPath:
         browser.open('/')
 
         # Добавляем первую утку
-        browser.all('#box-most-popular .link').element_by(have.attribute('title').value('Purple Duck')).click()
-        browser.element('[name=add_cart_product]').click()
-        browser.element('#cart .quantity').with_(timeout=6).should(have.text('1'))
-        browser.element('#page #breadcrumbs').element('//a[contains(text(),"Home")]').click()
+        browser.element('//*[@id="box-most-popular"]//*[contains(@class,"link")][@title="Purple Duck"]').click()
+        browser.element('//*[@name="add_cart_product"]').click()
+        browser.element('//*[@id="cart"]//*[contains(@class,"quantity")]').with_(timeout=6).should(have.text('1'))
+        browser.element('//*[@id="page"]//*[@id="breadcrumbs"]//a[contains(text(),"Home")]').click()
 
         # Добавляем вторую утку
-        browser.all('#box-most-popular .link').element_by(have.attribute('title').value('Green Duck')).click()
-        browser.element('[name=add_cart_product]').click()
-        browser.element('#cart .quantity').with_(timeout=6).should(have.text('2'))
+        browser.element('//*[@id="box-most-popular"]//*[contains(@class,"link")][@title="Green Duck"]').click()
+        browser.element('//*[@name="add_cart_product"]').click()
+        browser.element('//*[@id="cart"]//*[contains(@class,"quantity")]').with_(timeout=6).should(have.text('2'))
 
         # Открываем корзину
-        browser.element('#cart').click()
-        browser.element('.dataTable .footer').all('td')[1].should(have.exact_text('$20.00'))
-
+        browser.element('//*[@id="cart"]').click()
+        browser.all('//*[contains(@class,"dataTable")]//*[contains(@class,"footer")]/td')[1].should(have.exact_text('$20.00'))
